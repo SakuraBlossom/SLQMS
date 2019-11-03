@@ -1,6 +1,5 @@
 package seedu.address.ui;
 
-import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
