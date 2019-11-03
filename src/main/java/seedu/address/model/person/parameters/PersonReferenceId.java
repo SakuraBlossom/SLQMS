@@ -25,7 +25,7 @@ public class PersonReferenceId implements ReferenceId {
     /*
      * The reference ID should only contain alphanumeric characters.
      */
-    private static final String VALIDATION_REGEX = "[a-zA-Z0-9]{3,10}";
+    private static final String VALIDATION_REGEX = "[a-zA-Z0-9]{3,}";
     private static final HashMap<String, ReferenceId> UNIQUE_UNIVERSAL_REFERENCE_ID_MAP = new HashMap<>();
 
 
