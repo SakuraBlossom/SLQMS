@@ -111,10 +111,10 @@ public class MainAppTest extends ApplicationTest {
         var queueListView = robot.lookup("#queueListView").queryListView();
 
         robot.clickOn("#commandTextField")
-                .write("register -id 001A -name John Doe -phone 98765432"
+                .write("newpatient -id PAT001A -name John Doe -phone 98765432"
                         + " -email johnd@example.com -address 311, Clementi Ave 2, #02-25")
                 .type(KeyCode.ENTER)
-                .write("enqueue 001A")
+                .write("enqueue PAT001A")
                 .type(KeyCode.ENTER);
 
         Assertions.assertThat(resultDisplay.getText()).startsWith("New person added to the queue:");
