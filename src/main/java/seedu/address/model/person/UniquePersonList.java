@@ -66,7 +66,7 @@ public class UniquePersonList extends UniqueElementList<Person> {
         ReferenceId referenceId = toAdd.getReferenceId();
         personHashMap.put(referenceId, toAdd);
         assert personHashMap.size() == internalList.size();
-        referenceId.registerId();
+        //referenceId.registerId();
     }
 
     @Override
@@ -90,7 +90,7 @@ public class UniquePersonList extends UniqueElementList<Person> {
         ReferenceId referenceId = toRemove.getReferenceId();
         personHashMap.remove(referenceId);
         assert personHashMap.size() == internalList.size();
-        referenceId.unregisterId();
+        //referenceId.unregisterId();
     }
 
     @Override
