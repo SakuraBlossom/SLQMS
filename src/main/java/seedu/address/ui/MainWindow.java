@@ -108,22 +108,6 @@ public class MainWindow extends UiPart<Stage> implements AutoComplete, OmniPanel
         this.deferredDropSelectors = new HashSet<>();
         // Configure the UI
         setWindowDefaultSize(logic.getGuiSettings());
-
-        setAccelerators();
-
-        getRoot().addEventFilter(MouseEvent.MOUSE_PRESSED, event -> deferredDropSelectors.forEach(Runnable::run));
-
-        upperPane.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
-            switch (keyEvent.getCode()) {
-            case TAB:
-                keyEvent.consume();
-                commandBox.getRoot().requestFocus();
-                break;
-            default:
-            }
-        });
-
-        logic.bindOmniPanelTabConsumer(this::setOmniPanelTab);
     }
 
     public Stage getPrimaryStage() {
@@ -174,6 +158,22 @@ public class MainWindow extends UiPart<Stage> implements AutoComplete, OmniPanel
         aco = new AutoCompleteOverlay(this::autoCompleterSelected);
         anchorPane.getChildren().add(aco.getRoot());
         AnchorPane.setBottomAnchor(aco.getRoot(), 0.0);
+
+        setAccelerators();
+
+        getRoot().addEventFilter(MouseEvent.MOUSE_PRESSED, event -> deferredDropSelectors.forEach(Runnable::run));
+
+        upperPane.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
+            switch (keyEvent.getCode()) {
+            case TAB:
+                keyEvent.consume();
+                commandBox.getRoot().requestFocus();
+                break;
+            default:
+            }
+        });
+
+        logic.bindOmniPanelTabConsumer(this::setOmniPanelTab);
     }
 
     /**

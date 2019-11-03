@@ -1,5 +1,6 @@
 package seedu.address.ui;
 
+import java.util.concurrent.ExecutionException;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
@@ -39,10 +40,10 @@ public class UiManager implements Ui {
 
         try {
             mainWindow = new MainWindow(primaryStage, logic);
-            mainWindow.show(); //This should be called before creating other UI parts
             mainWindow.fillInnerParts();
+            mainWindow.show(); //This should be called before creating other UI parts
 
-        } catch (Throwable e) {
+        } catch (Exception e) {
             logger.severe(StringUtil.getDetails(e));
             showFatalErrorDialogAndShutdown("Fatal error during initializing", e);
         }

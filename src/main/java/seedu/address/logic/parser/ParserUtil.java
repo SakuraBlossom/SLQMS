@@ -1,3 +1,4 @@
+//@@author SakuraBlossom
 package seedu.address.logic.parser;
 
 import static java.util.Objects.requireNonNull;
@@ -17,6 +18,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.ReferenceId;
 import seedu.address.model.events.parameters.DateTime;
 import seedu.address.model.events.parameters.Timing;
+import seedu.address.model.exceptions.ReferenceIdIncorrectGroupClassificationException;
 import seedu.address.model.person.parameters.Address;
 import seedu.address.model.person.parameters.Email;
 import seedu.address.model.person.parameters.Name;
@@ -63,6 +65,43 @@ public class ParserUtil {
 
         return listOfEntries.get(oneBasedIndex.getZeroBased());
     }
+
+    /**
+     * Returns an existing {@code PersonReferenceId} if {@code String refId} is registered.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code PersonReferenceId} is invalid, not found or the {@code String refId}
+     * has been grouped under a different classification.
+     */
+    public static ReferenceId lookupStaffReferenceId(String staffRefId, String errorMessageOnClassificationError)
+            throws ParseException {
+        try {
+            return PersonReferenceId.lookupStaffReferenceId(staffRefId);
+        } catch (ReferenceIdIncorrectGroupClassificationException ex) {
+            throw new ParseException(String.format("%1$s\n%2$s", ex.getMessage(), errorMessageOnClassificationError));
+        } catch (ParseException ex) {
+            throw ex;
+        }
+    }
+
+    /**
+     * Returns an existing {@code PersonReferenceId} if {@code String refId} is registered.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code PersonReferenceId} is invalid, not found or the {@code String refId}
+     * has been grouped under a different classification.
+     */
+    public static ReferenceId lookupPatientReferenceId(String patientRefId, String errorMessageOnClassificationError)
+            throws ParseException {
+        try {
+            return PersonReferenceId.lookupPatientReferenceId(patientRefId);
+        } catch (ReferenceIdIncorrectGroupClassificationException ex) {
+            throw new ParseException(String.format("%1$s\n%2$s", ex.getMessage(), errorMessageOnClassificationError));
+        } catch (ParseException ex) {
+            throw ex;
+        }
+    }
+
 
     /**
      * Parses a {@code String refId} into an {@code ReferenceId}.
