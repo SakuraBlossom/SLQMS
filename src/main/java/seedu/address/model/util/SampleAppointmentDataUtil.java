@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
+import seedu.address.logic.parser.ParserUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.ReadOnlyAppointmentBook;
 import seedu.address.model.ReferenceId;
@@ -12,22 +13,18 @@ import seedu.address.model.events.Event;
 import seedu.address.model.events.parameters.DateTime;
 import seedu.address.model.events.parameters.Status;
 import seedu.address.model.events.parameters.Timing;
-import seedu.address.model.person.parameters.PersonReferenceId;
 
 /**
  * Contains utility methods for populating {@code AddressBook} with sample data.
  */
 public class SampleAppointmentDataUtil {
-    private static DateTime toDateTime(String dateTime) {
-        return DateTime.tryParseSimpleDateFormat(dateTime);
-    }
-
     /**
      * Parses the {@refId} as a patient's {@code ReferenceId}.
      */
     private static ReferenceId patientRefId(String refId) {
         try {
-            return PersonReferenceId.issuePatientReferenceId(refId);
+            return ParserUtil.lookupPatientReferenceId(refId,
+                    "Id should be registered as a Patient");
         } catch (ParseException ex) {
             throw new AssertionError("Error should be thrown from sample test data: " + ex.getMessage());
         }
@@ -38,7 +35,8 @@ public class SampleAppointmentDataUtil {
      */
     private static ReferenceId staffRefId(String refId) {
         try {
-            return PersonReferenceId.issueStaffReferenceId(refId);
+            return ParserUtil.lookupStaffReferenceId(refId,
+                    "Id should be registered as a Staff");
         } catch (ParseException ex) {
             throw new AssertionError("Error should be thrown from sample test data: " + ex.getMessage());
         }
