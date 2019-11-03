@@ -17,6 +17,8 @@ import seedu.address.model.ReferenceId;
  * Parses input arguments and creates a new EnqueueCommand object
  */
 public class EnqueueCommandParser implements Parser<ReversibleActionPairCommand> {
+    public static final String MESSAGE_ENQUEUE_STAFF =
+            "Staff doctors cannot be placed in the patient queue.";
 
     /**
      * Parses the given {@code String} of arguments in the context of the DeleteCommand
@@ -31,7 +33,9 @@ public class EnqueueCommandParser implements Parser<ReversibleActionPairCommand>
             throw new ParseException(String.format(MESSAGE_INVALID_COMMAND_FORMAT, EnqueueCommand.MESSAGE_USAGE));
         }
 
-        ReferenceId referenceId = ParserUtil.issuePatientReferenceId(argMultimap.getPreamble());
+        ReferenceId referenceId = ParserUtil.lookupPatientReferenceId(
+                argMultimap.getPreamble(),
+                MESSAGE_ENQUEUE_STAFF);
         return new ReversibleActionPairCommand(new EnqueueCommand(referenceId), new DequeueCommand(referenceId));
     }
 }
