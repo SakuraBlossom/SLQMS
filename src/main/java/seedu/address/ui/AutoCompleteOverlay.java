@@ -44,7 +44,7 @@ public class AutoCompleteOverlay extends UiPart<Region> {
         ObservableList<TextFlow> ols = autoCompleteOverlay.getItems();
         ols.setAll();
 
-        if (prefix.isBlank() || listOfSuggestions.isEmpty()) {
+        if (listOfSuggestions.isEmpty()) {
             return;
         }
         int prefixLastIndex = prefix.lastIndexOf(' ') + 1;
@@ -52,7 +52,6 @@ public class AutoCompleteOverlay extends UiPart<Region> {
         autoCompleteOverlay.setTranslateX(prefixLastIndex * FONT_WIDTH + X_OFFSET);
 
         int suggestionLength = 0;
-        listOfSuggestions.sort(String::compareTo);
         for (String suggestion : listOfSuggestions) {
             if (suggestion.isBlank()) {
                 break;
@@ -65,8 +64,9 @@ public class AutoCompleteOverlay extends UiPart<Region> {
             ols.add(textFlow);
             suggestionLength = Math.max(suggestion.length(), suggestionLength);
         }
+
         autoCompleteOverlay.getSelectionModel().select(0);
-        autoCompleteOverlay.setPrefHeight(1 + listOfSuggestions.size() * CELL_HEIGHT);
+        autoCompleteOverlay.setPrefHeight(1 + Math.min(listOfSuggestions.size(), 4) * CELL_HEIGHT);
         autoCompleteOverlay.setPrefWidth((prefix.length() + suggestionLength) * FONT_WIDTH + SCROLL_NEGATE_OFFSET);
         if (!ols.isEmpty()) {
             autoCompleteOverlay.setVisible(true);

@@ -34,6 +34,10 @@ public class CommandBox extends UiPart<Region> {
         // EventFilter was used as FXML callback onKeyPressed cannot consume keyEvent.
         commandTextField.addEventFilter(KeyEvent.KEY_PRESSED, keyEvent -> {
             switch (keyEvent.getCode()) {
+            case CONTROL:
+                handleTextChanged();
+                keyEvent.consume();
+                break;
             case UP:
             case DOWN:
             case ENTER:

@@ -1,6 +1,8 @@
 //@@author SakuraBlossom
 package seedu.address.logic.commands.patients;
 
+import java.util.List;
+
 import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.OmniPanelTab.PATIENTS_TAB;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
@@ -10,9 +12,12 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TAG;
 
+import seedu.address.logic.commands.appointments.AddAppCommand;
+import seedu.address.logic.commands.appointments.AppointmentsCommand;
 import seedu.address.logic.commands.common.CommandResult;
 import seedu.address.logic.commands.common.ReversibleCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
+import seedu.address.logic.commands.queue.EnqueueCommand;
 import seedu.address.model.Model;
 import seedu.address.model.person.Person;
 
@@ -63,7 +68,12 @@ public class RegisterPatientCommand extends ReversibleCommand {
         }
 
         model.addPatient(toAdd);
-        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd));
+        return new CommandResult(String.format(MESSAGE_SUCCESS, toAdd),
+                List.of(
+                        String.format("%s %s%s", AddAppCommand.COMMAND_WORD, PREFIX_ID, toAdd.getReferenceId()),
+                        String.format("%s %s", EnqueueCommand.COMMAND_WORD, toAdd.getReferenceId()),
+                        String.format("%s %s", AppointmentsCommand.COMMAND_WORD, toAdd.getReferenceId())
+                ));
     }
 
     @Override

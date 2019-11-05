@@ -8,6 +8,7 @@ import java.awt.GraphicsEnvironment;
 import java.io.IOException;
 import java.net.URI;
 import java.util.HashSet;
+import java.util.List;
 import java.util.logging.Logger;
 
 import javafx.application.Platform;
@@ -278,6 +279,8 @@ public class MainWindow extends UiPart<Stage> implements AutoComplete, OmniPanel
             if (commandResult.isExit()) {
                 handleExit();
             }
+
+            autoCompleter.setCustomSuggestions(commandResult.getListOfSuggestedCommands());
         } catch (CommandException | ParseException e) {
             logger.info("Invalid command: " + commandText);
             resultDisplay.setFeedbackToUser(e.getMessage());

@@ -2,6 +2,7 @@ package seedu.address.logic.commands.common;
 
 import static java.util.Objects.requireNonNull;
 
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -10,6 +11,7 @@ import java.util.Objects;
 public class CommandResult {
 
     private final String feedbackToUser;
+    private final List<String> listOfSuggestedCommands;
 
     /**
      * Help information should be shown to the user.
@@ -24,8 +26,9 @@ public class CommandResult {
     /**
      * Constructs a {@code CommandResult} with the specified fields.
      */
-    public CommandResult(String feedbackToUser, boolean showHelp, boolean exit) {
+    public CommandResult(String feedbackToUser, List<String> listOfSuggestedCommands, boolean showHelp, boolean exit) {
         this.feedbackToUser = requireNonNull(feedbackToUser);
+        this.listOfSuggestedCommands = (listOfSuggestedCommands == null) ? List.of() : listOfSuggestedCommands;
         this.showHelp = showHelp;
         this.exit = exit;
     }
@@ -35,11 +38,23 @@ public class CommandResult {
      * and other fields set to their default value.
      */
     public CommandResult(String feedbackToUser) {
-        this(feedbackToUser, false, false);
+        this(feedbackToUser, null, false, false);
+    }
+
+    /**
+     * Constructs a {@code CommandResult} with the specified {@code feedbackToUser}
+     * and {@code listOfSuggestedCommands}. Other fields will be set to their default value.
+     */
+    public CommandResult(String feedbackToUser, List<String> listOfSuggestedCommands) {
+        this(feedbackToUser, listOfSuggestedCommands, false, false);
     }
 
     public String getFeedbackToUser() {
         return feedbackToUser;
+    }
+
+    public List<String> getListOfSuggestedCommands() {
+        return listOfSuggestedCommands;
     }
 
     public boolean isShowHelp() {

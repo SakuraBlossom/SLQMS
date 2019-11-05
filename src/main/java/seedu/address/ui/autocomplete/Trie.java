@@ -1,6 +1,8 @@
 //@@author CarbonGrid
 package seedu.address.ui.autocomplete;
 
+import java.util.List;
+
 /**
  * Trie for AutoComplete Searches.
  */
@@ -8,6 +10,12 @@ public class Trie {
     private final TrieNode root = new TrieNode();
 
     public Trie(String... commandsToSupport) {
+        for (String command : commandsToSupport) {
+            this.insert(command);
+        }
+    }
+
+    public Trie(List<String> commandsToSupport) {
         for (String command : commandsToSupport) {
             this.insert(command);
         }

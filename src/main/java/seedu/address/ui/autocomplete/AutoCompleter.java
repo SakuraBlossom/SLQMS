@@ -1,6 +1,8 @@
 //@@author CarbonGrid
 package seedu.address.ui.autocomplete;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -52,57 +54,61 @@ public class AutoCompleter {
             Map.entry("newpatient", Set.of("-id", "-name", "-phone", "-address", "-tag", "-email"))
     );
 
-    private static final String[] SUPPORTED_COMMANDS = new String[]{
-            ListPatientCommand.COMMAND_WORD,
-            RegisterPatientCommand.COMMAND_WORD,
-            EditPatientDetailsCommand.COMMAND_WORD,
+    private static String[] SUPPORTED_COMMANDS = new String[] {
+        ListPatientCommand.COMMAND_WORD,
+        RegisterPatientCommand.COMMAND_WORD,
+        EditPatientDetailsCommand.COMMAND_WORD,
 
-            ListStaffCommand.COMMAND_WORD,
-            RegisterStaffCommand.COMMAND_WORD,
-            EditStaffDetailsCommand.COMMAND_WORD,
+        ListStaffCommand.COMMAND_WORD,
+        RegisterStaffCommand.COMMAND_WORD,
+        EditStaffDetailsCommand.COMMAND_WORD,
 
-            ExitCommand.COMMAND_WORD,
-            HelpCommand.COMMAND_WORD,
+        ExitCommand.COMMAND_WORD,
+        HelpCommand.COMMAND_WORD,
 
-            RedoCommand.COMMAND_WORD,
-            UndoCommand.COMMAND_WORD,
+        RedoCommand.COMMAND_WORD,
+        UndoCommand.COMMAND_WORD,
 
-            EnqueueCommand.COMMAND_WORD,
-            DequeueCommand.COMMAND_WORD,
+        EnqueueCommand.COMMAND_WORD,
+        DequeueCommand.COMMAND_WORD,
 
-            AckAppCommand.COMMAND_WORD,
-            AddAppCommand.COMMAND_WORD,
-            AppointmentsCommand.COMMAND_WORD,
-            CancelAppCommand.COMMAND_WORD,
-            ChangeAppCommand.COMMAND_WORD,
-            MissAppCommand.COMMAND_WORD,
-            SettleAppCommand.COMMAND_WORD,
+        AckAppCommand.COMMAND_WORD,
+        AddAppCommand.COMMAND_WORD,
+        AppointmentsCommand.COMMAND_WORD,
+        CancelAppCommand.COMMAND_WORD,
+        ChangeAppCommand.COMMAND_WORD,
+        MissAppCommand.COMMAND_WORD,
+        SettleAppCommand.COMMAND_WORD,
 
-            DutyShiftCommand.COMMAND_WORD,
-            AddDutyShiftCommand.COMMAND_WORD,
-            CancelDutyShiftCommand.COMMAND_WORD,
-            ChangeDutyShiftCommand.COMMAND_WORD,
+        DutyShiftCommand.COMMAND_WORD,
+        AddDutyShiftCommand.COMMAND_WORD,
+        CancelDutyShiftCommand.COMMAND_WORD,
+        ChangeDutyShiftCommand.COMMAND_WORD,
 
-            AddConsultationRoomCommand.COMMAND_WORD,
-            RemoveRoomCommand.COMMAND_WORD,
+        AddConsultationRoomCommand.COMMAND_WORD,
+        RemoveRoomCommand.COMMAND_WORD,
 
-            NextCommand.COMMAND_WORD,
-            BreakCommand.COMMAND_WORD,
-            ResumeCommand.COMMAND_WORD
+        NextCommand.COMMAND_WORD,
+        BreakCommand.COMMAND_WORD,
+        ResumeCommand.COMMAND_WORD
     };
 
     private static final Pattern NO_FLAG = Pattern.compile(".*\\s-\\S+\\s+$|^\\s*\\S*");
     private static final Pattern CONTINUOUS_SPACES = Pattern.compile("\\s+");
 
     private final Trie trie;
+    private Trie customTrie;
     private String currentQuery;
 
     public AutoCompleter() {
+        Arrays.sort(SUPPORTED_COMMANDS);
         trie = new Trie(SUPPORTED_COMMANDS);
+        customTrie = null;
     }
 
     public AutoCompleter(String... arr) {
         this.trie = new Trie(arr);
+        customTrie = null;
     }
 
     /**
@@ -132,9 +138,20 @@ public class AutoCompleter {
         }
     }
 
+    public void setCustomSuggestions(List<String> listOfCommands) {
+        customTrie = new Trie(listOfCommands);
+    }
+
     public List<String> getSuggestions() {
         try {
-            return trie.find(currentQuery).getPossibilities();
+            if (customTrie == null) {
+                return trie.find(currentQuery).getPossibilities();
+            }
+
+            List<String> listOfSuggestion = customTrie.find(currentQuery).getPossibilities();
+            listOfSuggestion.addAll(trie.find(currentQuery).getPossibilities());
+            return listOfSuggestion;
+
         } catch (NullPointerException e) {
             return Collections.emptyList();
         }
