@@ -5,6 +5,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.core.OmniPanelTab.PATIENTS_TAB;
 import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 
+import java.util.List;
 import java.util.function.Predicate;
 
 import seedu.address.commons.core.Messages;
@@ -47,6 +48,19 @@ public class ListPatientCommand extends NonActionableCommand {
         requireNonNull(model);
         model.setTabListing(PATIENTS_TAB);
         model.updateFilteredPatientList(predicate);
+
+        if (model.getFilteredPatientList().size() == 1) {
+
+            return new CommandResult(
+                String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW,
+                    model.getFilteredPatientList().size(),
+                    predicate.toString()),
+                List.of(
+                    ListPatientCommand.COMMAND_WORD + " "
+                        + model.getFilteredPatientList().get(0).getReferenceId().toString()
+                ));
+        }
+
         return new CommandResult(
                 String.format(Messages.MESSAGE_PERSONS_LISTED_OVERVIEW,
                         model.getFilteredPatientList().size(),

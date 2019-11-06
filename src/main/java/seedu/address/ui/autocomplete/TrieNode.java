@@ -3,16 +3,16 @@ package seedu.address.ui.autocomplete;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 /**
  * TrieNode of Trie.
  */
 public class TrieNode {
-    private final HashMap<Character, TrieNode> children = new HashMap<>();
+    private final LinkedHashMap<Character, TrieNode> children = new LinkedHashMap<>();
 
-    public HashMap<Character, TrieNode> getChildren() {
+    public LinkedHashMap<Character, TrieNode> getChildren() {
         return children;
     }
 

@@ -43,15 +43,15 @@ import seedu.address.logic.commands.staff.RegisterStaffCommand;
  * Component for AutoComplete
  */
 public class AutoCompleter {
-    private static final Map<String, Set<String>> SUPPORTED_ARGUMENTS = Map.ofEntries(
-            Map.entry("editappt", Set.of("-entry", "-start", "-end")),
-            Map.entry("editshift", Set.of("-entry", "-start", "-end")),
-            Map.entry("editdoctor", Set.of("-entry", "-id", "-name", "-phone", "-address", "-email")),
-            Map.entry("editpatient", Set.of("-entry", "-id", "-name", "-phone", "-address", "-tag", "-email")),
-            Map.entry("newappt", Set.of("-id", "-rec", "-num", "-start", "-end")),
-            Map.entry("newshift", Set.of("-id", "-rec", "-num", "-start", "-end")),
-            Map.entry("newdoctor", Set.of("-id", "-name", "-phone", "-address", "-email")),
-            Map.entry("newpatient", Set.of("-id", "-name", "-phone", "-address", "-tag", "-email"))
+    private static final Map<String, List<String>> SUPPORTED_ARGUMENTS = Map.ofEntries(
+            Map.entry("editappt", List.of("-entry", "-start", "-end")),
+            Map.entry("editshift", List.of("-entry", "-start", "-end")),
+            Map.entry("editdoctor", List.of("-entry", "-id", "-name", "-phone", "-address", "-email")),
+            Map.entry("editpatient", List.of("-entry", "-id", "-name", "-phone", "-address", "-tag", "-email")),
+            Map.entry("newappt", List.of("-id", "-rec", "-num", "-start", "-end")),
+            Map.entry("newshift", List.of("-id", "-rec", "-num", "-start", "-end")),
+            Map.entry("newdoctor", List.of("-id", "-name", "-phone", "-address", "-email")),
+            Map.entry("newpatient", List.of("-id", "-name", "-phone", "-address", "-tag", "-email"))
     );
 
     private static String[] SUPPORTED_COMMANDS = new String[] {
@@ -101,14 +101,13 @@ public class AutoCompleter {
     private String currentQuery;
 
     public AutoCompleter() {
-        Arrays.sort(SUPPORTED_COMMANDS);
         trie = new Trie(SUPPORTED_COMMANDS);
-        customTrie = null;
+        customTrie = new Trie();
     }
 
     public AutoCompleter(String... arr) {
-        this.trie = new Trie(arr);
-        customTrie = null;
+        trie = new Trie(arr);
+        customTrie = new Trie();
     }
 
     /**
@@ -124,10 +123,10 @@ public class AutoCompleter {
             return this;
         }
         try {
-            Set<String> result = SUPPORTED_ARGUMENTS.get(currentQuery.substring(0, currentQuery.indexOf(' ')));
-            HashSet<String> available = new HashSet<>(result);
+            List<String> result = SUPPORTED_ARGUMENTS.get(currentQuery.substring(0, currentQuery.indexOf(' ')));
+            List<String> available = new ArrayList<>(result);
             available.removeAll(List.of(CONTINUOUS_SPACES.split(currentQuery)));
-            if (result.contains("-tag")) {
+            if (result.contains("-tag") && !available.contains("-tag")) {
                 available.add("-tag");
             }
             AutoCompleter autoCompleter = new AutoCompleter(available.toArray(String[]::new));
@@ -144,13 +143,10 @@ public class AutoCompleter {
 
     public List<String> getSuggestions() {
         try {
-            if (customTrie == null) {
-                return trie.find(currentQuery).getPossibilities();
-            }
-
-            List<String> listOfSuggestion = customTrie.find(currentQuery).getPossibilities();
-            listOfSuggestion.addAll(trie.find(currentQuery).getPossibilities());
-            return listOfSuggestion;
+            List<String> suggestions = new ArrayList<>();
+            suggestions.addAll(customTrie.find(currentQuery));
+            suggestions.addAll(trie.find(currentQuery));
+            return suggestions;
 
         } catch (NullPointerException e) {
             return Collections.emptyList();

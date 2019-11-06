@@ -1,7 +1,9 @@
 //@@author CarbonGrid
 package seedu.address.ui.autocomplete;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Trie for AutoComplete Searches.
@@ -39,11 +41,15 @@ public class Trie {
      * @param word
      * @return TrieNode
      */
-    public TrieNode find(String word) {
+    public List<String> find(String word) {
         TrieNode current = root;
         for (int i = 0; i < word.length() && current != null; i++) {
             current = current.getChildren().get(word.charAt(i));
         }
-        return current;
+        if (current == null) {
+            return Collections.singletonList("");
+        }
+
+        return current.getPossibilities();
     }
 }

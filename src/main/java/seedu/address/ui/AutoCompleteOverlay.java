@@ -52,10 +52,12 @@ public class AutoCompleteOverlay extends UiPart<Region> {
         autoCompleteOverlay.setTranslateX(prefixLastIndex * FONT_WIDTH + X_OFFSET);
 
         int suggestionLength = 0;
+        int suggestionCount = 0;
         for (String suggestion : listOfSuggestions) {
             if (suggestion.isBlank()) {
-                break;
+                continue;
             }
+            suggestionCount++;
             Text prefixText = new Text(prefix);
             prefixText.setFill(Paint.valueOf("#0FF"));
             Text suggestionText = new Text(suggestion);
@@ -66,7 +68,7 @@ public class AutoCompleteOverlay extends UiPart<Region> {
         }
 
         autoCompleteOverlay.getSelectionModel().select(0);
-        autoCompleteOverlay.setPrefHeight(1 + Math.min(listOfSuggestions.size(), 4) * CELL_HEIGHT);
+        autoCompleteOverlay.setPrefHeight(1 + Math.min(suggestionCount, 3) * CELL_HEIGHT);
         autoCompleteOverlay.setPrefWidth((prefix.length() + suggestionLength) * FONT_WIDTH + SCROLL_NEGATE_OFFSET);
         if (!ols.isEmpty()) {
             autoCompleteOverlay.setVisible(true);
