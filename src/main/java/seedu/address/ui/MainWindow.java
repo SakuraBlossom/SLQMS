@@ -335,6 +335,32 @@ public class MainWindow extends UiPart<Stage> implements AutoComplete, OmniPanel
      */
     private void autoCompleterSelected(String selectedText) {
         commandBox.appendCommandTextField(selectedText);
+
+        switch(selectedText) {
+
+        case "newpatient ":
+            resultDisplay.setFeedbackToUser("Registers a new patient.");
+            break;
+
+        case "patient ":
+            resultDisplay.setFeedbackToUser("Finds all persons whose particulars contains the specified keywords");
+            break;
+
+        case "newappt ":
+            resultDisplay.setFeedbackToUser("Schedules an appointment for the specified patient");
+            break;
+
+        case "-id ":
+            resultDisplay.setFeedbackToUser("Reference Id to identify person, should only contain 3 to 10 (inclusive) alphanumeric characters.");
+            break;
+
+        case "-name ":
+            resultDisplay.setFeedbackToUser("Names should only contain alphanumeric characters and spaces.");
+            break;
+
+        default:
+            break;
+        }
     }
 
     /**
