@@ -346,17 +346,22 @@ public class MainWindow extends UiPart<Stage> implements AutoComplete, OmniPanel
             resultDisplay.setFeedbackToUser("Finds all persons whose particulars contains the specified keywords");
             break;
 
-        case "newappt ":
+        case "newappt -id S9123456F ":
             resultDisplay.setFeedbackToUser("Schedules an appointment for the specified patient");
             break;
 
         case "-id ":
-            resultDisplay.setFeedbackToUser("Reference Id to identify person, should only contain 3 to 10 (inclusive) alphanumeric characters.");
+            resultDisplay.setFeedbackToUser("Reference Id to identify person [3 to 10 (inclusive) alphanumeric characters]");
             break;
 
         case "-name ":
             resultDisplay.setFeedbackToUser("Names should only contain alphanumeric characters and spaces.");
             break;
+
+        case "-start ":
+            resultDisplay.setFeedbackToUser("The start timing of the appointment.");
+            break;
+
 
         default:
             break;

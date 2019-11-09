@@ -46,12 +46,13 @@ public class AutoCompleter {
     private static final Map<String, List<String>> SUPPORTED_ARGUMENTS = Map.ofEntries(
             Map.entry("editappt", List.of("-entry", "-start", "-end")),
             Map.entry("editshift", List.of("-entry", "-start", "-end")),
-            Map.entry("editdoctor", List.of("-entry", "-id", "-name", "-phone", "-address", "-email")),
-            Map.entry("editpatient", List.of("-entry", "-id", "-name", "-phone", "-address", "-tag", "-email")),
-            Map.entry("newappt", List.of("-id", "-rec", "-num", "-start", "-end")),
+            Map.entry("editdoctor", List.of("-entry", "-id", "-name", "-phone (optional)", "-address (optional)", "-email (optional)")),
+            Map.entry("editpatient", List.of("-entry", "-id", "-name", "-phone (optional)",
+                "-address (optional)", "-tag(optional)", "-email(optional)")),
+            Map.entry("newappt", List.of("-id", "-start", "-end", "-rec (optional)", "-num (optional)")),
             Map.entry("newshift", List.of("-id", "-rec", "-num", "-start", "-end")),
             Map.entry("newdoctor", List.of("-id", "-name", "-phone", "-address", "-email")),
-            Map.entry("newpatient", List.of("-id", "-name", "-phone", "-address", "-tag", "-email"))
+            Map.entry("newpatient", List.of("-id", "-name", "-phone (optional)", "-address (optional)", "-tag (optional)", "-email (optional)"))
     );
 
     private static String[] SUPPORTED_COMMANDS = new String[] {
